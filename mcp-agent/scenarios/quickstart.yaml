@@ -1,0 +1,12 @@
+name: mcp-quickstart
+description: Quick evaluation of MCP agent
+agent: mcp-example
+pack: quickstart
+faults:
+  - llm_rate_limit
+  - tool_timeout
+  - mcp_tool_latency
+  - mcp_tool_failure
+security:
+  enabled: true
+  threshold: 80

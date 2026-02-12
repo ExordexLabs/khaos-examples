@@ -1,0 +1,54 @@
+name: Khaos CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-examples:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example:
+          - openai-agent
+          - anthropic-agent
+          - langgraph-agent
+          - crewai-agent
+          - autogen-agent
+          - mcp-agent
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Khaos
+        run: pip install khaos-agent
+
+      - name: Install example dependencies
+        run: pip install -r ${{ matrix.example }}/requirements.txt
+
+      - name: Run Khaos CI evaluation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          cd ${{ matrix.example }}
+          khaos ci agent.py --pack quickstart
+
+      - name: Upload evaluation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: khaos-results-${{ matrix.example }}
+          path: |
+            ${{ matrix.example }}/.khaos/
+            ${{ matrix.example }}/.khaos_runs/
+          retention-days: 30

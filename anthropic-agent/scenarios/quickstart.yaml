@@ -1,0 +1,10 @@
+name: anthropic-quickstart
+description: Quick evaluation of Anthropic agent
+agent: anthropic-example
+pack: quickstart
+faults:
+  - llm_rate_limit
+  - tool_timeout
+security:
+  enabled: true
+  threshold: 80
