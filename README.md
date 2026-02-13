@@ -2,6 +2,19 @@
 
 Production-grade AI agent examples and educational tutorials demonstrating security and resilience testing with Khaos.
 
+## Availability
+
+### Available now
+
+- All tutorials and example agents run locally with `khaos-agent`
+- `khaos run`, `khaos test`, and `khaos ci` workflows are fully usable without cloud
+- CI-friendly scenarios are included per example (`scenarios/quickstart.yaml`)
+
+### Cloud rollout
+
+Cloud dashboard features are rolling out separately. Join the waitlist at
+[exordex.com/khaos](https://exordex.com/khaos).
+
 ## Choose Your Path
 
 ### 🎓 New to Khaos? Start Here
@@ -345,6 +358,6 @@ def main(prompt: str) -> dict:
 
 ## License
 
-Business Source License 1.1 - see [LICENSE](./LICENSE) for details.
+Source-available under Business Source License 1.1 (not OSI open source) - see [LICENSE](./LICENSE) for details.
 
 Converts to Apache 2.0 on 2030-01-29.

@@ -12,13 +12,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        example:
-          - openai-agent
-          - anthropic-agent
-          - langgraph-agent
-          - crewai-agent
-          - autogen-agent
-          - mcp-agent
+        include:
+          - example: customer-support-agent
+            required_secret: OPENAI_API_KEY
+          - example: sql-query-agent
+            required_secret: ANTHROPIC_API_KEY
+          - example: code-execution-agent
+            required_secret: OPENAI_API_KEY
+          - example: api-integration-agent
+            required_secret: GOOGLE_API_KEY
+          - example: document-processing-agent
+            required_secret: ANTHROPIC_API_KEY
+          - example: financial-transaction-agent
+            required_secret: OPENAI_API_KEY
 
     steps:
       - name: Checkout repository
@@ -32,13 +38,32 @@ jobs:
       - name: Install Khaos
         run: pip install khaos-agent
 
-      - name: Install example dependencies
-        run: pip install -r ${{ matrix.example }}/requirements.txt
-
-      - name: Run Khaos CI evaluation
+      - name: Check required provider key
+        id: keycheck
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          REQUIRED="${{ matrix.required_secret }}"
+          VALUE="$(printenv "$REQUIRED" || true)"
+          if [ -z "$VALUE" ]; then
+            echo "has_key=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping ${{ matrix.example }}: missing required secret $REQUIRED"
+          else
+            echo "has_key=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install example dependencies
+        if: steps.keycheck.outputs.has_key == 'true'
+        run: pip install -r ${{ matrix.example }}/requirements.txt
+
+      - name: Run Khaos CI evaluation
+        if: steps.keycheck.outputs.has_key == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           cd ${{ matrix.example }}
           khaos ci agent.py --pack quickstart
