@@ -1,0 +1,4 @@
+name: bank-assistant-tutorial
+description: Tutorial 2 - Tool misuse and authorization
+agent: bank-assistant
+pack: quickstart

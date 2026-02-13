@@ -1,0 +1,4 @@
+name: task-assistant-tutorial
+description: Tutorial 1 - Prompt injection defenses
+agent: task-assistant
+pack: quickstart

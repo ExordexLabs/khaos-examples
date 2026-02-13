@@ -1,0 +1,4 @@
+name: support-assistant-tutorial
+description: Tutorial 3 - PII protection and data minimization
+agent: support-assistant
+pack: quickstart

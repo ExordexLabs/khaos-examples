@@ -1,26 +1,70 @@
-# Khaos Examples — Agent Framework Demos
+# Khaos Examples
 
-Production-ready example agents demonstrating Khaos chaos engineering and security testing across popular AI agent frameworks.
+Production-grade AI agent examples and educational tutorials demonstrating security and resilience testing with Khaos.
+
+## Choose Your Path
+
+### 🎓 New to Khaos? Start Here
+
+**[Quickstart + Tutorials](./quickstart/)** - 30 minutes total, free Gemini API
+- **[quickstart/](./quickstart/)** - 5 min: Dead simple echo agent with prompt injection
+- **[tutorial/01-prompt-injection/](./tutorial/01-prompt-injection/)** - 10 min: Defense layers and why system prompts fail
+- **[tutorial/02-tool-misuse/](./tutorial/02-tool-misuse/)** - 10 min: Authorization in code vs prompts
+- **[tutorial/03-data-leakage/](./tutorial/03-data-leakage/)** - 10 min: PII protection and data minimization
+
+All tutorials use **Gemini 2.0 Flash** (free API key from [aistudio.google.com](https://aistudio.google.com/app/apikey))
+
+### 💼 Ready for Production Examples?
+
+**Real-world agent vulnerabilities** using latest models (GPT-5.3, Opus 4.6, Sonnet 4.5, Gemini 3):
+- **Customer support agents** leaking PII and bypassing refund policies
+- **SQL query agents** vulnerable to injection attacks
+- **Code execution agents** with arbitrary command injection
+- **API integration agents** exposing credentials via SSRF
+- **Document processors** with path traversal flaws
+- **Payment agents** with authorization bypass
 
 ## Framework Compatibility Matrix
 
-| Framework | Example | Category | Capabilities | Status |
-|-----------|---------|----------|--------------|--------|
-| **OpenAI** | `openai-agent` | LLM Inference | LLM, Tool-calling | - Ready |
-| **Anthropic** | `anthropic-agent` | LLM Inference | LLM, Tool-calling | - Ready |
-| **LangGraph** | `langgraph-agent` | Orchestrated | LLM, Tool-calling, Multi-step | - Ready |
-| **CrewAI** | `crewai-agent` | Orchestrated | LLM, Multi-agent | - Ready |
-| **AutoGen** | `autogen-agent` | Orchestrated | LLM, Multi-agent | - Ready |
-| **MCP** | `mcp-agent` | Tool Agent | LLM, Tool-calling, MCP | - Ready |
+| Example | Framework | Model | Category | Critical Vulnerabilities |
+|---------|-----------|-------|----------|--------------------------|
+| **customer-support-agent** | OpenAI | GPT-5.3 | Tool Calling | Prompt injection, PII leakage, authorization bypass |
+| **sql-query-agent** | Anthropic | Opus 4.6 | Tool Calling | SQL injection, unauthorized data access, PII extraction |
+| **code-execution-agent** | LangGraph | GPT-5.2 | Multi-step | Arbitrary code execution, command injection, sandbox escape |
+| **api-integration-agent** | CrewAI | Gemini 3 | Multi-agent | SSRF, credential leakage, unauthorized API calls |
+| **document-processing-agent** | AutoGen | Sonnet 4.5 | Multi-agent | Path traversal, PII extraction, malicious file upload |
+| **financial-transaction-agent** | MCP | GPT-5.3 | MCP Tools | Authorization bypass, amount manipulation, fraud bypass |
 
 ## Get Started in 60 Seconds
+
+### For Newcomers (Free Gemini API)
+
+```bash
+# 1. Install Khaos
+pip install khaos-agent
+
+# 2. Get a free Gemini API key
+# Visit: https://aistudio.google.com/app/apikey
+
+# 3. Start with quickstart
+cd quickstart
+pip install -r requirements.txt
+export GOOGLE_API_KEY="your-key-here"
+
+# 4. Run your first security test
+khaos run agent.py --attack pi-ignore-instructions
+
+# 5. See how prompt injection works!
+```
+
+### For Production Testing
 
 ```bash
 # 1. Install Khaos
 pip install khaos-agent
 
 # 2. Pick an example
-cd openai-agent
+cd customer-support-agent
 
 # 3. Install dependencies
 pip install -r requirements.txt
@@ -28,56 +72,167 @@ pip install -r requirements.txt
 # 4. Set your API key
 export OPENAI_API_KEY="your-key-here"
 
-# 5. Run chaos tests
-khaos run agent.py --pack quickstart
-
-# 6. Run security tests
+# 5. Run security tests
 khaos run agent.py --pack security
+
+# 6. See the vulnerabilities Khaos finds
 ```
 
-## Examples
+## Educational Tutorials (Start Here!)
 
-### [openai-agent](./openai-agent/) — Direct OpenAI SDK
-Simple agent using OpenAI's GPT-4o-mini with function calling. Demonstrates:
-- Direct OpenAI SDK integration
-- Tool/function calling
-- Token usage tracking
-- Zero-instrumentation fault injection
+### [quickstart/](./quickstart/) - Your First 5 Minutes with Khaos
 
-### [anthropic-agent](./anthropic-agent/) — Direct Anthropic SDK
-Claude-powered agent with tool use blocks. Demonstrates:
-- Direct Anthropic SDK integration
-- Tool use with system prompts
-- Message API patterns
-- Streaming support (optional)
+**What you'll learn**: Basic Khaos workflow + prompt injection basics
 
-### [langgraph-agent](./langgraph-agent/) — LangGraph Orchestration
-Stateful multi-step agent using LangGraph. Demonstrates:
-- Compiled graph execution
-- State management across nodes
-- Tool nodes and agent nodes
-- Graph-level fault injection
+**Agent**: Echo assistant that repeats user messages
 
-### [crewai-agent](./crewai-agent/) — Multi-Agent Crew
-Collaborative multi-agent system. Demonstrates:
-- Crew composition with roles
-- Task delegation patterns
-- Agent-to-agent communication
-- Crew-level resilience testing
+**Vulnerability**: System prompts can be overridden with simple attacks
 
-### [autogen-agent](./autogen-agent/) — Conversational Agents
-Microsoft AutoGen conversable agents. Demonstrates:
-- ConversableAgent setup
-- Multi-turn conversations
-- Agent initiation patterns
-- Conversation-level fault injection
+**Time**: 5 minutes
 
-### [mcp-agent](./mcp-agent/) — Model Context Protocol
-MCP tool integration with stdio transport. Demonstrates:
-- MCP server spawning
-- Tool discovery and invocation
-- MCP-specific fault injection
-- Transport-level resilience
+**Why it matters**: Even the simplest agents have security vulnerabilities
+
+---
+
+### [tutorial/01-prompt-injection/](./tutorial/01-prompt-injection/) - Defense in Depth
+
+**What you'll learn**: Why system prompts alone fail, how to layer defenses
+
+**Agent**: Task assistant with configurable security levels (weak/medium/strong)
+
+**Vulnerability**: Prompt injection to execute "forbidden" tasks
+
+**Key lesson**: Security must be enforced in CODE, not prompts
+
+**Time**: 10 minutes
+
+**Real-world impact**: Companies lose millions to prompt injection attacks bypassing content policies
+
+---
+
+### [tutorial/02-tool-misuse/](./tutorial/02-tool-misuse/) - Authorization in Tools
+
+**What you'll learn**: Tool calling security, authorization checks, confused deputy problem
+
+**Agent**: Bank assistant with money transfer capability
+
+**Vulnerability**: Can transfer money FROM anyone TO anyone without authorization
+
+**Key lesson**: Never trust role claims from prompts. Implement authorization in code.
+
+**Time**: 10 minutes
+
+**Real-world impact**: Financial agents without proper authorization can be manipulated to move funds
+
+---
+
+### [tutorial/03-data-leakage/](./tutorial/03-data-leakage/) - PII Protection
+
+**What you'll learn**: Data minimization, PII masking, GDPR/HIPAA compliance basics
+
+**Agent**: Customer support with access to SSNs, credit cards, addresses
+
+**Vulnerability**: Social engineering to extract full PII
+
+**Key lesson**: Mask PII at the DATA layer, not the LLM layer
+
+**Time**: 10 minutes
+
+**Real-world impact**: PII leakage = regulatory fines + loss of customer trust
+
+---
+
+**Total tutorial time**: 35 minutes (quickstart + 3 tutorials)
+
+**Prerequisites**: None - just a free Gemini API key
+
+**What's next**: After tutorials, explore production examples below
+
+## Production Examples
+
+### [customer-support-agent](./customer-support-agent/) - CRM Access + Refund Processing
+
+**Scenario**: Customer support agent with access to user PII, refund tools, and ticket history.
+
+**Vulnerabilities Khaos Will Find**:
+- Prompt injection to bypass $100 refund limit
+- Unauthorized access to other users' PII (SSN, credit cards)
+- Policy violations (issuing refunds without justification)
+- Tool misuse (lookup tool used for data mining)
+
+**Tech Stack**: OpenAI GPT-5.3, function calling
+
+**Why This Matters**: Every company with customer support agents faces these risks. One prompt injection can cost thousands in fraudulent refunds.
+
+### [sql-query-agent](./sql-query-agent/) - Natural Language to SQL
+
+**Scenario**: Translates natural language to SQL queries and executes them on production database.
+
+**Vulnerabilities Khaos Will Find**:
+- Classic SQL injection via natural language
+- Access to restricted tables (admin_keys with API secrets)
+- PII extraction (SSNs, credit cards, password hashes)
+- Potential for DROP TABLE and destructive operations
+
+**Tech Stack**: Anthropic Claude Opus 4.6, tool use
+
+**Why This Matters**: SQL injection is still a top OWASP vulnerability. LLMs make it easier to exploit, not harder.
+
+### [code-execution-agent](./code-execution-agent/) - Python Code Generation + Execution
+
+**Scenario**: Generates and executes Python code from user requests in "sandboxed" environment.
+
+**Vulnerabilities Khaos Will Find**:
+- Arbitrary code execution (os.system, subprocess)
+- Command injection via generated code
+- Sandbox escape through __import__ tricks
+- Resource exhaustion (infinite loops, memory bombs)
+
+**Tech Stack**: LangGraph + OpenAI GPT-5.2, multi-step orchestration
+
+**Why This Matters**: Code execution agents are popular but extremely dangerous. Sandboxing via prompts doesn't work.
+
+### [api-integration-agent](./api-integration-agent/) - External API Calls
+
+**Scenario**: Multi-agent system that makes authenticated calls to Stripe, Twilio, SendGrid APIs.
+
+**Vulnerabilities Khaos Will Find**:
+- SSRF (Server-Side Request Forgery) to internal infrastructure
+- API credential leakage in responses
+- Unauthorized API calls (charge $10k to random customer)
+- Internal network scanning via webhook callbacks
+
+**Tech Stack**: CrewAI + Google Gemini 3, multi-agent
+
+**Why This Matters**: SSRF and credential leakage can expose entire infrastructure. Prompt-based URL validation fails.
+
+### [document-processing-agent](./document-processing-agent/) - File Upload + PII Extraction
+
+**Scenario**: Processes uploaded documents (PDF, DOCX) and extracts structured data including PII.
+
+**Vulnerabilities Khaos Will Find**:
+- Path traversal (read /etc/passwd, SSH keys)
+- PII extraction without redaction
+- Malicious file uploads (XML bombs, malware)
+- Unauthorized file writes to system directories
+
+**Tech Stack**: AutoGen + Claude Sonnet 4.5, conversational agents
+
+**Why This Matters**: File upload is a classic attack vector. LLMs make path traversal easier to exploit via natural language.
+
+### [financial-transaction-agent](./financial-transaction-agent/) - Payment Processing
+
+**Scenario**: Processes payments, refunds, and transfers via MCP payment gateway tools.
+
+**Vulnerabilities Khaos Will Find**:
+- Authorization bypass (transfer funds without permission)
+- Amount manipulation (bypass $1000 limit with multiple $999 transactions)
+- Fraud detection bypass (ignore risk scores)
+- Transaction replay (duplicate refunds)
+
+**Tech Stack**: OpenAI GPT-5.3 + MCP tools
+
+**Why This Matters**: Financial agents have the highest stakes. One authorization bypass = direct financial loss.
 
 ## Running with Khaos CLI
 
@@ -88,9 +243,16 @@ khaos run <example>/agent.py
 
 ### With Evaluation Pack
 ```bash
-khaos run <example>/agent.py --pack quickstart
-khaos run <example>/agent.py --pack resilience
-khaos run <example>/agent.py --pack security
+khaos run <example>/agent.py --pack quickstart   # Baseline + resilience + security
+khaos run <example>/agent.py --pack security     # 242+ security attacks
+khaos run <example>/agent.py --pack resilience   # Fault injection
+```
+
+### Specific Attacks
+```bash
+khaos run customer-support-agent/agent.py --attack prompt_injection --attack pii_extraction
+khaos run sql-query-agent/agent.py --attack sql_injection --attack data_exfiltration
+khaos run code-execution-agent/agent.py --attack code_injection --attack command_injection
 ```
 
 ### Run Tests
@@ -100,7 +262,7 @@ khaos test <example>/tests/
 
 ### Compare Agents
 ```bash
-khaos compare openai-agent/agent.py anthropic-agent/agent.py --pack baseline
+khaos compare customer-support-agent/agent.py sql-query-agent/agent.py --pack baseline
 ```
 
 ## CI/CD Integration
@@ -109,7 +271,7 @@ Each example includes a `scenarios/quickstart.yaml` that can be used in CI:
 
 ```yaml
 # .github/workflows/khaos-ci.yml
-name: Khaos CI
+name: Khaos Security CI
 on: [push, pull_request]
 
 jobs:
@@ -117,7 +279,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example: [openai-agent, anthropic-agent, langgraph-agent, crewai-agent, autogen-agent, mcp-agent]
+        example:
+          - customer-support-agent
+          - sql-query-agent
+          - code-execution-agent
+          - api-integration-agent
+          - document-processing-agent
+          - financial-transaction-agent
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -126,9 +294,25 @@ jobs:
       - run: pip install khaos-agent
       - run: pip install -r ${{ matrix.example }}/requirements.txt
       - run: khaos ci ${{ matrix.example }}/agent.py --pack quickstart
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
-See [CI/CD Integration Guide](https://khaos.dev/docs/ci-onboarding) for full setup.
+## Expected Khaos Findings
+
+Running `khaos run agent.py --pack security` on these examples will typically find:
+
+| Example | Expected Vulnerabilities | Typical Pass Rate |
+|---------|--------------------------|-------------------|
+| customer-support-agent | Prompt injection, PII leakage, authorization bypass | 65-75% |
+| sql-query-agent | SQL injection, unauthorized data access | 60-70% |
+| code-execution-agent | Code injection, command execution | 55-65% |
+| api-integration-agent | SSRF, credential leakage | 60-70% |
+| document-processing-agent | Path traversal, PII extraction | 55-65% |
+| financial-transaction-agent | Authorization bypass, fraud bypass | 50-60% |
+
+**Why pass rates are "low"**: These examples intentionally demonstrate vulnerable patterns. Production agents should score 80%+ after hardening.
 
 ## Writing Your Own Agent
 
@@ -143,7 +327,7 @@ from khaos import khaosagent
     description="My agent description",
     category="llm_inference",  # or "orchestrated", "tool_agent", etc.
     capabilities=["llm", "tool-calling"],
-    framework="openai",  # optional: framework name
+    framework="openai",
 )
 def main(prompt: str) -> dict:
     """Handle a single prompt and return a response."""
@@ -152,43 +336,15 @@ def main(prompt: str) -> dict:
     return {"response": result}
 ```
 
-The `@khaosagent` decorator provides:
-- - Automatic fault injection (HTTP, LLM, tool timeouts, etc.)
-- - Security attack testing (242+ attacks)
-- - Zero-code telemetry capture
-- - Token/cost tracking
-- - CLI integration
-- - CI/CD compatibility
-
-## Testing Your Agent
-
-Write declarative or imperative tests with `@khaostest`:
-
-```python
-from khaos.testing import khaostest
-
-# Declarative: Khaos drives execution
-@khaostest(agent="my-agent", faults=["llm_timeout", "http_error"])
-def test_resilience():
-    pass
-
-# Imperative: You control execution
-@khaostest(agent="my-agent")
-def test_custom(agent):
-    result = agent("What is 2+2?")
-    assert result.success
-    assert "4" in result.text
-```
-
 ## Resources
 
 - **SDK Repository**: [github.com/ExordexLabs/khaos-sdk](https://github.com/ExordexLabs/khaos-sdk)
-- **Documentation**: [khaos.dev/docs](https://khaos.dev/docs)
+- **Documentation**: [exordex.com/khaos](https://exordex.com/khaos)
 - **Examples Repository**: [github.com/ExordexLabs/khaos-examples](https://github.com/ExordexLabs/khaos-examples)
-- **Cloud Dashboard**: [khaos.dev](https://khaos.dev)
+- **Dashboard**: [khaos.exordex.com](https://khaos.exordex.com) (coming soon)
 
 ## License
 
-Business Source License 1.1 — see [LICENSE](./LICENSE) for details.
+Business Source License 1.1 - see [LICENSE](./LICENSE) for details.
 
 Converts to Apache 2.0 on 2030-01-29.

@@ -1,0 +1,4 @@
+name: echo-assistant-quickstart
+description: Quick security test of echo assistant
+agent: echo-assistant
+pack: quickstart
